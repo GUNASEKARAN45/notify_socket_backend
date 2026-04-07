@@ -12,16 +12,13 @@ const io = new Server(server, {
   cors: { origin: '*', methods: ['GET', 'POST', 'PATCH', 'DELETE'] }
 });
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Track online users: userId -> socketId
 const onlineUsers = new Map();
 app.set('io', io);
 app.set('onlineUsers', onlineUsers);
 
-// Socket.io
 io.on('connection', (socket) => {
   socket.on('register_user', (userId) => {
     onlineUsers.set(userId, socket.id);
@@ -33,7 +30,6 @@ io.on('connection', (socket) => {
   });
 });
 
-// Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/notifications', require('./routes/notifications'));
 
